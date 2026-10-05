@@ -30,8 +30,9 @@ namespace ASp_Tutorial.Controllers
             return res is null ? NotFound("پیدا نشد ") : Ok(res);
         }
 
-        [HttpGet("expensive/{price:decimal?}")]
-        public IActionResult GetExpensive(decimal? price)
+        // in this case constraint doent support ? for decimal , float type it would say required [HttpGet("expensive/{price:decimal?}")]
+        [HttpGet("expensive")]
+        public IActionResult GetExpensive([FromQuery]decimal? price)
         {
             var pri = price ?? 100;
             return Ok(_product.Where(w => w.Price >= pri).ToList());

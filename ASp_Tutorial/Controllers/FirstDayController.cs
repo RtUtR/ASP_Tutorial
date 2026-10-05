@@ -7,7 +7,7 @@ namespace ASp_Tutorial.Controllers
     [ApiController]
     public class FirstDayController : ControllerBase
     {
-        private static List<ProductDto> _product = new()
+        private static List<ProductDto_v2> _product = new()
         {
             new(1, "laptop", 1500, "Electronics"),
             new(2, "Phone", 800, "Electronics"),
@@ -17,7 +17,7 @@ namespace ASp_Tutorial.Controllers
         [HttpGet("GetAll")]
         public IActionResult GetAll([FromQuery] string? Cat)
         {
-           List<ProductDto> i =string.IsNullOrWhiteSpace(Cat) || string.IsNullOrEmpty(Cat)
+           List<ProductDto_v2> i =string.IsNullOrWhiteSpace(Cat) || string.IsNullOrEmpty(Cat)
                 ?_product
                 :_product.Where(w=>w.Category== Cat).ToList();
                 return Ok(i);
@@ -46,9 +46,9 @@ namespace ASp_Tutorial.Controllers
         }
 
         [HttpPost("Create")]
-        public IActionResult Create([FromBody] CreateProductDto dto)
+        public IActionResult Create([FromBody] CreateProductDto_v1 dto)
         {
-            ProductDto newProduct = new(
+            ProductDto_v2 newProduct = new(
                 Category: dto.Category,
                 Id : _product.Count + 1,
                 Name:dto.Name,
@@ -61,8 +61,8 @@ namespace ASp_Tutorial.Controllers
 
 
         // DTO's
-        public record ProductDto(int Id, string Name, decimal Price, string Category);
-        public record CreateProductDto(
+        public record ProductDto_v2(int Id, string Name, decimal Price, string Category);
+        public record CreateProductDto_v1(
         [Required][MaxLength(100)] string Name,
         [Range(0, 20000)] decimal Price,
         [Required] string Category

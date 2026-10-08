@@ -1,10 +1,11 @@
 ﻿using ASp_Tutorial._4Day.Entitiy;
 using ASp_Tutorial._4Day.Mapper;
+using ASp_Tutorial.Controllers.Second_Day.Models.entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASp_Tutorial._4Day.Dtos_4
 {
-    public class UserService : IUserService
+    public class UserService (ILogger<UserService> _logger): IUserService
     {
         private static List<UserEntity> _entities = new List<UserEntity>()
         {
@@ -16,7 +17,11 @@ namespace ASp_Tutorial._4Day.Dtos_4
         public bool Delete(int id)
         {
             UserEntity? o =_entities.FirstOrDefault(w => w.Id == id);
-            if (o is null) return false;
+            if (o is null)
+            {
+                _logger.LogWarning("User {id} not found for Delete",id);
+                return false;
+            }
             _entities.Remove(o);
             return true;
         }
@@ -24,7 +29,11 @@ namespace ASp_Tutorial._4Day.Dtos_4
         public ResponseUserDTO? GetByID(int id)
         {
             UserEntity? Result = _entities.FirstOrDefault(w=>w.Id == id);
-            if(Result is null) return null;
+            if (Result is null)
+            {
+                _logger.LogWarning("User {id} not found for GetByid",id);
+                return null;
+            }
             ResponseUserDTO resu= Result.ToResponse();
             return resu;
         
@@ -38,7 +47,11 @@ namespace ASp_Tutorial._4Day.Dtos_4
         public ResponseUserDTO ?Update(int id, UpdateuserDTO x)
         {
             UserEntity?User= _entities.FirstOrDefault(x => x.Id == id);
-            if (User is null) return null;
+            if (User is null)
+            {
+                _logger.LogWarning("User {id} not foud for Update", id);
+                return null;
+            }
             User.Name = x.Name;
             User.Phone = x.Phone;
             User.IsMarried = x.IsMarried;
@@ -50,6 +63,7 @@ namespace ASp_Tutorial._4Day.Dtos_4
             var t = x.ToEntity();
             t.Id = Index++;
             _entities.Add(t);
+            _logger.LogInformation("Product created with Id {Id}", t.Id);
             return t.ToResponse();
         }
     }

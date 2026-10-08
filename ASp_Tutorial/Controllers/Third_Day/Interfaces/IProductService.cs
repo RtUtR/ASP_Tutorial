@@ -5,7 +5,7 @@ namespace ASp_Tutorial.Controllers.Third_Day.Interfaces;
 
 public interface IProductService
 {
-    IEnumerable<ProductResponseDto> GetAll();
+    IEnumerable<ProductListDto> GetAll();
     ProductResponseDto? GetById(int id);
     ProductResponseDto Create(CreateProductDto createProductDto);
     bool Update(int id , UpdateProductDto x);

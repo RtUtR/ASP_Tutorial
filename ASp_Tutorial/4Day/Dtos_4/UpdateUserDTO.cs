@@ -1,6 +1,10 @@
-﻿namespace ASp_Tutorial._4Day.Dtos_4
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ASp_Tutorial._4Day.Dtos_4
 {
-    public class UpdateUserDTO
-    {
-    }
+    public record UpdateuserDTO(
+        [Required] string Name,
+        bool IsMarried,
+        string Phone
+        );
 }

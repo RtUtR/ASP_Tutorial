@@ -1,5 +1,6 @@
 ﻿using ASp_Tutorial._4Day.Entitiy;
 using ASp_Tutorial._4Day.Mapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASp_Tutorial._4Day.Dtos_4
 {
@@ -31,12 +32,25 @@ namespace ASp_Tutorial._4Day.Dtos_4
 
         public IEnumerable<ListUserDTO> GetUsers()
         {
-            _entities.Select(x=>x.ToList_user()).ToList();
+           return _entities.Select(x=>x.ToList_user()).ToList();
         }
 
-        public ResponseUserDTO Update(int id, UpdateuserDTO x)
+        public ResponseUserDTO ?Update(int id, UpdateuserDTO x)
         {
-            throw new NotImplementedException();
+            UserEntity?User= _entities.FirstOrDefault(x => x.Id == id);
+            if (User is null) return null;
+            User.Name = x.Name;
+            User.Phone = x.Phone;
+            User.IsMarried = x.IsMarried;
+            return User.ToResponse();
+        
+        }
+        public ResponseUserDTO Create(CreateUserDTO x)
+        {
+            var t = x.ToEntity();
+            t.Id = Index++;
+            _entities.Add(t);
+            return t.ToResponse();
         }
     }
 }

@@ -32,9 +32,9 @@ namespace ASp_Tutorial.Controllers.Third_Day
             return true;
         }
 
-        public IEnumerable<ProductResponseDto> GetAll()
+        public IEnumerable<ProductListDto> GetAll()
         {
-            var i = _product.Select(x => x.ToResponse()).ToList();
+            var i = _product.Select(x => x.ToListDto()).ToList();
             return i;
         }
 
